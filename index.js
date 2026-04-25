@@ -249,10 +249,14 @@ app.get('/oauth/callback', async (req, res) => {
       })
     });
     const d = await r.json();
+    const token = d.refresh_token || 'NO_REFRESH_TOKEN — try again';
     res.send(`
       <h2>✅ Gmail Connected!</h2>
       <p>Copy this refresh token to your Railway variables as <strong>GMAIL_REFRESH_TOKEN</strong>:</p>
-      <textarea style="width:100%;height:100px">${d.refresh_token}</textarea>
+      <textarea style="width:100%;height:100px;font-size:12px">${token}</textarea>
+      <br><br>
+      <p><strong>Full response (find refresh_token here):</strong></p>
+      <textarea style="width:100%;height:150px;font-size:10px">${JSON.stringify(d, null, 2)}</textarea>
       <p>Then restart your Railway deployment.</p>
     `);
   } catch (e) {
